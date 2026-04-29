@@ -16,8 +16,8 @@ Tracker operativo del progetto. Ogni voce deve essere tracciabile a un ADR valid
 | 4 | Hardening governance v0.5.0 — fix audit (B1–B5, M1–M9, P1–P3) | ADR-0009, ADR-0010, ADR-0011 | Completato (commit `416ab87`) |
 | 5 | Verdetto: sistema governance a prova di bomba per fase pre-codice | tutti 0001–0011 | Confermato — sistema in produzione |
 | 6 | Vision capture protocol — ADR-0012 + PROJECT-RAW.md template `Draft` | ADR-0012 | Completato (CHG-2026-04-29-003) |
-| 7 | Esposizione bozza dal Leader → riempimento PROJECT-RAW.md `Draft → Iterating` | ADR-0012 | In attesa — Leader esporrà la bozza nella prossima sessione |
-| 8 | `Frozen` PROJECT-RAW.md → proposta scomposizione (Claude) → validazione Leader → ADR di stack | ADR-0012, ADR di stack da promulgare | Successivo a #7 |
+| 7 | Esposizione bozza dal Leader → riempimento PROJECT-RAW.md `Draft → Iterating` | ADR-0012 | **Round 1 completato (CHG-004)** — bozza TALOS trascritta verbatim, 24 lacune raccolte. Round 2: chiusura lacune critiche con il Leader |
+| 8 | `Frozen` PROJECT-RAW.md → proposta scomposizione (Claude) → validazione Leader → ADR di stack | ADR-0012, ADR di stack da promulgare | Successivo al chiudere lacune critiche di #7 (in particolare L04 formula VGP) |
 | 9 | Fork repo su PC operativo Leader + verifica `gitnexus analyze` (ISS-001) | ADR-0007 | Rinviato — bloccato da setup PC operativo |
 | 10 | Prima linea di codice applicativo | ADR di stack (da promulgare) | Bloccante: dipende da #8 |
 
@@ -53,3 +53,4 @@ _Decisioni architetturali future da discutere e formalizzare tramite ADR prima d
 | 2026-04-29 | Promulgazione ADR 0005–0008 + git hooks + enforcement + anti-allucinazione | ADR-0005–0008 | Leader |
 | 2026-04-29 | Hardening governance v0.5.0 — ADR-0009/0010/0011 + errata + hardening patch + hook rinforzati | ADR-0009, ADR-0010, ADR-0011 | Leader (CHG-2026-04-29-002, commit `416ab87`) |
 | 2026-04-29 | Vision capture protocol — ADR-0012 + PROJECT-RAW.md template Draft | ADR-0012 | Leader (CHG-2026-04-29-003) |
+| 2026-04-29 | TALOS — prima esposizione bozza, trascrizione verbatim, 24 lacune (Iterating Round 1) | ADR-0012 | Leader (CHG-2026-04-29-004) |

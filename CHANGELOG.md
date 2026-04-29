@@ -9,6 +9,26 @@ e questo progetto aderisce al [Semantic Versioning](https://semver.org/lang/it/)
 
 ## [Unreleased]
 
+## [0.7.0] — 2026-04-29 — TALOS Vision Exposition (Round 1)
+
+### Added
+- **Codename del progetto: TALOS (Scaler 500k)** — Hedge Fund algoritmico automatizzato applicato al modello FBA Wholesale High-Ticket
+- `docs/changes/2026-04-29-004-talos-exposition-iterating.md` — change document della prima esposizione
+
+### Changed
+- `PROJECT-RAW.md`: trascrizione verbatim integrale della bozza esposta dal Leader, mappatura 14+1 sezioni → 11 sezioni template, 24 lacune raccolte (8 critiche, 12 importanti, 4 di forma); status `Draft → Iterating`; frontmatter aggiornato (`qa_rounds: 1`, `codename: TALOS`, `tagline: "Scaler 500k"`)
+- `docs/STATUS.md`: stato corrente = Iterating Round 1 completato, Round 2 (chiusura lacune critiche) in attesa Leader
+- `ROADMAP.md`: obiettivo #7 in corso — esposizione completata, lacune mappate
+
+### Lacune critiche da risolvere prima del Frozen
+- **L04** Formula del VGP Score (non definita)
+- **L08** Lookup Amazon (scraping vs PA-API)
+- **L11/L12** Sorgente Fee_FBA e Referral_Fee
+- **L18** Tecnologia OCR/Vision per file non-strutturati
+- **L20** Criteri di completamento misurabili
+- **L21** Keepa: subscription, campi, costo, rate limit
+- **L06** Estrattore Samsung-only: scope MVP e roadmap
+
 ## [0.6.0] — 2026-04-29 — Vision Capture Protocol
 
 ### Added
