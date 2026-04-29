@@ -7,6 +7,11 @@ deciders: Leader
 category: process
 supersedes: —
 superseded_by: —
+hardening_patches:
+  - date: 2026-04-29
+    chg: CHG-2026-04-29-002
+    section: "Flusso di Re-Briefing"
+    superseded_by: ADR-0010
 ---
 
 ## Contesto
@@ -68,6 +73,10 @@ Il sistema è chiuso: ogni nodo punta a un altro nodo.
 
 ### Flusso di Re-Briefing
 
+> **⚠ Sezione superseduta da ADR-0010 — non normativa.**
+> La sequenza canonica e unica del Self-Briefing è definita in [ADR-0010 sezione "Sequenza di Re-Briefing — Fonte Unica"](ADR-0010-self-briefing-hardening.md#sequenza-di-re-briefing--fonte-unica).
+> Testo originale conservato sotto per ragioni storiche. **Non seguire questa sequenza.**
+
 Il re-briefing ottimale dopo un'interruzione segue questa sequenza:
 1. `INDEX.md` — mappa neurale degli ADR attivi
 2. `ROADMAP.md` — obiettivi correnti
@@ -100,3 +109,11 @@ Il re-briefing ottimale dopo un'interruzione segue questa sequenza:
 ## Rollback
 
 Se un change document contiene informazioni errate, si corregge con un nuovo commit che aggiorna il documento stesso. La correzione è a sua volta un change document (campo `what`: "Correzione CHG-YYYY-MM-DD-NNN").
+
+## Errata
+
+### 2026-04-29 — CHG-2026-04-29-002
+- **Tipo:** hardening patch (ADR-0009)
+- **Modifica:** sezione "Flusso di Re-Briefing" marcata come superseduta da ADR-0010 con blocco di intestazione esplicito; testo originale conservato sotto il blocco
+- **Motivo:** la sequenza qui definita non include `docs/STATUS.md` (creato dopo la promulgazione di ADR-0004) e contraddice CLAUDE.md + ADR-0008. Senza marcatura, un futuro Claude che leggesse questo ADR in isolamento (come ADR-0008 Regola 6 impone per le aree rilevanti) seguirebbe una sequenza obsoleta
+- **Sostanza alterata:** Sezione "Flusso di Re-Briefing" marcata obsoleta (resto dell'ADR invariato e normativo)

@@ -51,7 +51,7 @@ fi
 
 # ── Check 2: Struttura ADR (ADR-0001) ─────────────────────────────────────────
 if [ ${#NEW_ADR_FILES[@]} -gt 0 ]; then
-    REQUIRED=("## Contesto" "## Decisione" "## Conseguenze" "## Cross-References" "## Rollback")
+    REQUIRED=("## Contesto" "## Decisione" "## Conseguenze" "## Test di Conformità" "## Cross-References" "## Rollback")
 
     for adr in "${NEW_ADR_FILES[@]}"; do
         MISSING_SECTIONS=()

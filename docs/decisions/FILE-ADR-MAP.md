@@ -14,10 +14,11 @@ Navigazione inversa: da un file qualsiasi al suo ADR di riferimento.
 
 | File / Pattern | ADR Primario | ADR Secondari | Note |
 |---|---|---|---|
-| `CLAUDE.md` | ADR-0001 | tutti | Rules of Engagement; modificare solo con ADR di supporto |
+| `CLAUDE.md` | ADR-0001 | ADR-0008, ADR-0010 (Step 0 + sequenza re-briefing) | Rules of Engagement; modificare solo con ADR di supporto |
 | `ROADMAP.md` | ADR-0001 | — | Aggiornare ad ogni ADR ratificato |
 | `CHANGELOG.md` | ADR-0003, ADR-0004 | ADR-0005 | Checkpoint log + change summary con link CHG |
-| `docs/decisions/ADR-*.md` | ADR-0001 | — | Ogni ADR segue TEMPLATE.md; vedi INDEX.md |
+| `docs/STATUS.md` | ADR-0008 | ADR-0004, ADR-0010 (header freshness + anchoring) | Fonte di verità sullo stato corrente; aggiornare a fine sessione con modifiche |
+| `docs/decisions/ADR-*.md` | ADR-0001 | ADR-0009 (errata corrige + hardening patch) | Ogni ADR segue TEMPLATE.md; vedi INDEX.md |
 | `docs/decisions/INDEX.md` | ADR-0001 | — | Aggiornare prima della ratifica di ogni nuovo ADR |
 | `docs/decisions/FILE-ADR-MAP.md` | ADR-0001 | — | Questo file; aggiornare ad ogni nuovo componente |
 | `docs/decisions/TEMPLATE.md` | ADR-0001 | — | Template ADR; modificare solo con nuovo ADR meta |
@@ -28,11 +29,20 @@ Navigazione inversa: da un file qualsiasi al suo ADR di riferimento.
 
 | File / Pattern | ADR Primario | ADR Secondari | Note |
 |---|---|---|---|
-| `scripts/hooks/pre-commit` | ADR-0006 | ADR-0001, ADR-0002, ADR-0004 | Enforcement meccanico change doc + struttura ADR |
-| `scripts/hooks/commit-msg` | ADR-0006 | ADR-0005 | Enforcement meccanico commit convention |
-| `scripts/setup-hooks.sh` | ADR-0006 | — | Eseguire dopo ogni clone |
+| `scripts/hooks/pre-commit` | ADR-0006 | ADR-0001, ADR-0002, ADR-0004 | Enforcement meccanico change doc + struttura ADR (incl. Test di Conformità) |
+| `scripts/hooks/commit-msg` | ADR-0006 | ADR-0005 | Enforcement meccanico commit convention (CHG-ID + ADR-NNNN + classifier staging) |
+| `scripts/setup-hooks.sh` | ADR-0006 | ADR-0010 (verifica via Step 0) | Eseguire dopo ogni clone |
 | `.gitnexus/` | ADR-0007 | — | Database GitNexus; non modificare manualmente |
+| `.gitattributes` | ADR-0006 | — | Forza LF su hooks e markdown; vincolo di esecuzione hook su Windows |
 | `.gitignore` | — | — | Triviale; nessun ADR |
+
+## Push, Branch, Tag
+
+| File / Pattern | ADR Primario | ADR Secondari | Note |
+|---|---|---|---|
+| Branch `main` | ADR-0011 | ADR-0003 | Single-branch in fase governance; force push proibito senza autorizzazione |
+| Tag `checkpoint/*`, `milestone/*` | ADR-0003 | ADR-0011 (push immediato) | Immutabili; pushati esplicitamente al remote |
+| Remote `origin` | ADR-0011 | ADR-0003 | Push immediato post-commit certificato |
 
 ## Codice Applicativo
 
@@ -52,3 +62,4 @@ Navigazione inversa: da un file qualsiasi al suo ADR di riferimento.
 | Stack tecnologico | Nessun ADR | Leader deve definire il linguaggio/framework |
 | CI/CD pipeline | Nessun ADR | Leader deve definire il workflow di deployment |
 | Struttura directory del codice | Nessun ADR | Dipende dallo stack; da definire con ADR architecture |
+| Branch policy v2 | Rinviata da ADR-0011 | Da rivedere all'introduzione del primo modulo applicativo |

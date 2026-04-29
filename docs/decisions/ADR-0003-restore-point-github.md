@@ -7,6 +7,10 @@ deciders: Leader
 category: process
 supersedes: —
 superseded_by: —
+errata:
+  - date: 2026-04-29
+    chg: CHG-2026-04-29-002
+    summary: "Tabella 'Tipologie di Checkpoint': 'master' corretto in 'main' (branch reale del repository)"
 ---
 
 ## Contesto
@@ -19,7 +23,7 @@ Il costo di un errore in produzione è alto e la reversibilità è un requisito 
 
 | Tipo | Trigger | Tag Format | GitHub Release |
 |---|---|---|---|
-| **Periodico** | Ogni 5 commit significativi su master | `checkpoint/YYYY-MM-DD-NN` | No |
+| **Periodico** | Ogni 5 commit significativi su main | `checkpoint/YYYY-MM-DD-NN` | No |
 | **Milestone** | ADR completamente implementato | `milestone/ADR-NNNN` | Sì, con note |
 | **Manuale** | Richiesta esplicita del Leader | `manual/slug-descrittivo` | A discrezione del Leader |
 
@@ -97,3 +101,11 @@ git reset --hard <tag-name>
 ```
 
 In caso di rollback effettivo, documentare l'evento in `CHANGELOG.md` e in un change document dedicato.
+
+## Errata
+
+### 2026-04-29 — CHG-2026-04-29-002
+- **Tipo:** errata corrige (ADR-0009)
+- **Modifica:** tabella "Tipologie di Checkpoint" — sostituito `master` con `main` nella riga "Periodico"
+- **Motivo:** refuso testuale; la branch reale del repository è `main`, mai esistita una `master`
+- **Sostanza alterata:** No

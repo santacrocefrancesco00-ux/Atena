@@ -10,7 +10,7 @@ adr_ref: ADR-0001, ADR-0002, ADR-0003, ADR-0004, ADR-0005, ADR-0006, ADR-0007, A
 ## What — Cosa è cambiato
 
 Inizializzazione completa del sistema di governance architetturale del progetto:
-- Promulgazione di 7 ADR fondativi (ADR-0001 → ADR-0007)
+- Promulgazione di 8 ADR fondativi (ADR-0001 → ADR-0008)
 - Creazione della mappa neurale (INDEX.md) e dell'indice inverso (FILE-ADR-MAP.md)
 - Creazione dei template ADR e change document
 - Implementazione degli hook git per enforcement meccanico (pre-commit, commit-msg)
@@ -19,7 +19,7 @@ Inizializzazione completa del sistema di governance architetturale del progetto:
 
 ## Why — Perché
 
-**ADR di riferimento:** Tutti gli ADR 0001–0007 sono stati ratificati dal Leader in questa sessione.
+**ADR di riferimento:** Tutti gli ADR 0001–0008 sono stati ratificati dal Leader in questa sessione.
 
 Il Leader ha stabilito i seguenti requisiti fondamentali:
 - Test gate obbligatorio prima di ogni commit (ADR-0002)
@@ -85,7 +85,15 @@ Sistema chiuso e auto-consistente: ogni nodo punta ad altri nodi. Gli hook git t
 
 ## Refs
 
-- ADR: [ADR-0001](../decisions/ADR-0001-meta-architettura-adr.md) → [ADR-0007](../decisions/ADR-0007-gitnexus-integration.md)
-- Commit: `5959ebd`
-- Checkpoint successivo: `milestone/ADR-0001-0007` (primo milestone tag del progetto)
+- ADR: [ADR-0001](../decisions/ADR-0001-meta-architettura-adr.md) → [ADR-0008](../decisions/ADR-0008-anti-allucinazione.md)
+- Commit: `5959ebd` (bootstrap ADR-0001…0007), `a796ce0` (aggiunta ADR-0008 + altri rifiniture, milestone tag)
+- Checkpoint: `milestone/ADR-0001-0008` (primo milestone tag del progetto, su commit `a796ce0`)
 - Issue / Task: —
+
+## Errata
+
+### 2026-04-29 — CHG-2026-04-29-002
+- **Tipo:** errata corrige (ADR-0009)
+- **Modifica:** corretto il numero di ADR ratificati (da "7" / "0001–0007" a "8" / "0001–0008") in tre punti del testo; riferimento milestone tag corretto da `milestone/ADR-0001-0007` a `milestone/ADR-0001-0008`
+- **Motivo:** refuso di numerazione; il frontmatter dello stesso CHG e l'elenco file creati includevano già correttamente ADR-0008, mentre il corpo del documento riportava solo fino a 0007
+- **Sostanza alterata:** No

@@ -9,6 +9,34 @@ e questo progetto aderisce al [Semantic Versioning](https://semver.org/lang/it/)
 
 ## [Unreleased]
 
+## [0.5.0] — 2026-04-29 — Governance Hardening
+
+Audit completo del sistema di governance richiesto dal Leader. Rilevati 5 buchi seri (B1–B5), 9 sviste minori (M1–M9) e 3 policy mancanti (P1–P3). Risolti integralmente in questo release.
+
+### Added
+- `ADR-0009`: Errata Corrige & Hardening Patch — meccanismo formale per correggere refusi e marcare sezioni obsolete senza supersessione completa ([CHG-2026-04-29-002](docs/changes/2026-04-29-002-hardening-governance.md))
+- `ADR-0010`: Self-Briefing Hardening & STATUS Anchoring — Step 0 di verifica `core.hooksPath` (bloccante), header `Ultimo aggiornamento` in STATUS.md, regola di anchoring per ogni claim, fonte unica della sequenza di re-briefing ([CHG-2026-04-29-002](docs/changes/2026-04-29-002-hardening-governance.md))
+- `ADR-0011`: Operational Policies — push immediato post-commit, branch policy fase governance, definizione formale di test manuali documentati per file di governance/infrastruttura ([CHG-2026-04-29-002](docs/changes/2026-04-29-002-hardening-governance.md))
+- `docs/changes/2026-04-29-002-hardening-governance.md` — change document del hardening
+- Frontmatter ADR esteso con campi opzionali `errata:` e `hardening_patches:` (append-only)
+- Sezione `## Errata` in coda agli ADR modificati
+
+### Changed
+- `scripts/hooks/pre-commit`: aggiunta `## Test di Conformità` alla lista delle sezioni obbligatorie per nuovi ADR (B3)
+- `scripts/hooks/commit-msg`: classifier dei file in staging anche per prefissi docs/chore/ci (B2); verifica esistenza fisica del change document referenziato dal CHG-ID (M7); presenza obbligatoria di ADR-NNNN nel footer (M6)
+- `docs/decisions/INDEX.md`: aggiunti ADR-0009/0010/0011, grafo dipendenze esteso, status `Active¹` per ADR-0004 (con hardening patch), issues ISS-001/002 spostate qui per visibilità
+- `docs/decisions/FILE-ADR-MAP.md`: aggiunto `docs/STATUS.md` (governato da ADR-0008 + ADR-0010), corretto `.gitattributes` (governato da ADR-0006, non più "triviale"), nuova sezione "Push, Branch, Tag" (M4, M5)
+- `docs/STATUS.md`: header `Ultimo aggiornamento` + ancore verificabili su tutti i claim, aggiornamento integrale alla nuova realtà di governance
+- `CLAUDE.md`: Self-Briefing con Step 0 bloccante, riferimento esplicito ad ADR-0010 come fonte unica della sequenza, sezione "Tipi di test ammessi" (ADR-0011), branch `main` (corretta), push policy esplicita
+- `ROADMAP.md`: obiettivo "Hardening governance v0.5.0" completato; rinvio "Branch policy v2" alla fase codice applicativo
+
+### Errata Corrige (ADR-0009)
+- `ADR-0003`: tabella "Tipologie di Checkpoint" — `master` corretto in `main` (M1). Sezione `## Errata` aggiunta.
+- `docs/changes/2026-04-29-001-bootstrap-adr-fondativi.md`: numerazione "ADR 0001–0007" corretta in "ADR 0001–0008" (3 occorrenze); riferimento milestone tag corretto (M2). Sezione `## Errata` aggiunta.
+
+### Hardening Patches (ADR-0009)
+- `ADR-0004` sezione "Flusso di Re-Briefing": marcata superseduta da ADR-0010 con blocco di intestazione esplicito (B1). Status di ADR-0004 in INDEX.md aggiornato a `Active¹`. Sezione `## Errata` aggiunta.
+
 ## [0.4.0] — 2026-04-29
 
 ### Added
