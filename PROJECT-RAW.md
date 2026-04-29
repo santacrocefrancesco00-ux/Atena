@@ -4,7 +4,7 @@ owner: Leader
 started: 2026-04-29
 last_iteration: 2026-04-29
 frozen_at: —
-qa_rounds: 1
+qa_rounds: 2
 codename: TALOS
 tagline: Scaler 500k
 ---
@@ -16,7 +16,9 @@ tagline: Scaler 500k
 >
 > **Nota del Leader (verbatim, 2026-04-29):** *"Nessuna lacuna lasciata aperta. Il dominio funzionale e matematico è stato definito con rigore assoluto."*
 >
-> **Nota di Claude (ADR-0012 regola "Lacune Mai Completate"):** rispettando la disciplina del documento, sono state comunque marcate **24 lacune o ambiguità** — alcune critiche (formula VGP non specificata; il "monarca decisore" del sistema), altre di forma (apparente refuso R-08 ↔ R-09; sezione 15 saltata). La regola obbliga a marcare anche lacune che il Leader può ritenere chiare: chiusura nei round Q&A successivi.
+> **Nota di Claude (ADR-0012 regola "Lacune Mai Completate"):** rispettando la disciplina del documento, sono state comunque marcate **24 lacune o ambiguità** in Round 1 — alcune critiche (formula VGP non specificata; il "monarca decisore" del sistema), altre di forma (apparente refuso R-08 ↔ R-09; sezione 15 saltata). La regola obbliga a marcare anche lacune che il Leader può ritenere chiare: chiusura nei round Q&A successivi.
+>
+> **Round 2 (2026-04-29):** chiuse 6 lacune (L06, L08, L11, L12, L18, L20), aperta 1 sub-lacuna condizionale (L11b — formula Fee_FBA fornita dal Leader). **19 lacune aperte** (2 critiche: L04 formula VGP, L21 Keepa subscription).
 >
 > **Pipeline (ADR-0012):** Draft → **Iterating (qui)** → Frozen → proposta scomposizione (in chat) → validazione Leader → ADR di stack + ROADMAP.
 
@@ -76,9 +78,9 @@ Avviene tramite:
 
 Se si procede con il file di JungleScout, è necessario fare un **lookup del prodotto su Amazon** in base alla disponibilità mostrata nei listini fornitore somministrati.
 
-> [LACUNA L08 — CRITICA]: il "lookup del prodotto su Amazon" come avviene tecnicamente? Scraping di amazon.it (Selenium / requests+bs4)? Product Advertising API di Amazon (PA-API 5)? Solo by ASIN o anche by titolo+EAN? **Bloccante per la scelta dello stack di networking + per i ToS Amazon.**
+> **[L08 — CHIUSA Round 2 (2026-04-29)]** — Decisione Leader: **scraping di amazon.it**. La libreria specifica (Selenium / Playwright / requests+BeautifulSoup) sarà oggetto di ADR di stack futuro. Implicazioni ToS Amazon da gestire (vedi anche L17 sui rischi non tecnici, sezione 8.2).
 
-> [LACUNA L21 — CRITICA]: API Keepa: quale subscription level necessaria? Quali campi specifici servono (BuyBox corrente + storico, BSR, Fee FBA, Referral Fee, dimensioni/peso)? Stima costo mensile? Affidabilità dei limiti di rate?
+> [LACUNA L21 — CRITICA, ANCORA APERTA]: API Keepa: quale subscription level necessaria? Quali campi specifici servono (BuyBox corrente + storico, BSR, Fee FBA, Referral Fee, dimensioni/peso)? Stima costo mensile? Affidabilità dei limiti di rate? **Risposta del Leader attesa nei prossimi round.**
 
 #### 4.1.2 Estrattore di entità (Regex specializzato)
 
@@ -98,7 +100,12 @@ Idea plausibile per ottenere sempre match perfetti:
 
 **L'eccezione intelligente — Whitelist 5G:** include una whitelist di modelli nati nativamente come 5G (es. serie S22-S26 e Z Fold/Flip). Se il fornitore non scrive "5G" per un Galaxy S24, lo script sa che è un'omissione innocua (**asimmetria benigna**) e fa passare il match.
 
-> [LACUNA L06 — CRITICA]: "specializzato esclusivamente su smartphone Samsung". **Domanda:** Talos opera solo su Samsung anche in MVP, o l'MVP scarta a monte tutti i non-Samsung dal listino? E in roadmap futura: estensione ad altri brand (Apple, Xiaomi, Google, Huawei)? Il design del modulo Estrattore deve essere generalizzabile o monolitico Samsung?
+> **[L06 — CHIUSA Round 2 (2026-04-29) — Decisione delegata a Claude dal Leader: "quello che ti sembra meglio"]**
+>
+> **Decisione architetturale (ratificata dalla delega esplicita del Leader):**
+> - **MVP Samsung-only:** l'estrattore opera **esclusivamente su smartphone Samsung** in MVP. I non-Samsung del listino sono scartati a monte con log esplicito (R-01 NO SILENT DROPS).
+> - **Architettura modulare:** il modulo è progettato come una `BrandExtractor` interface astratta, con `SamsungExtractor` come unica implementazione concreta in MVP. Estensione futura via implementazioni `AppleExtractor`, `XiaomiExtractor`, `HuaweiExtractor` ecc. senza modifica della pipeline di matching/validazione.
+> - **Razionale:** focus + scope ridotto + whitelist 5G già definita per Samsung; design del modulo a costo marginale aggiuntivo trascurabile vs versione monolitica; multi-brand in roadmap post-MVP non blocca l'MVP.
 
 #### 4.1.3 Filtro NLP (Kill-Switch)
 
@@ -171,7 +178,7 @@ Talos deve **annullare i tempi morti di inserimento dati**. L'interfaccia accett
 | **Strutturati** | `XLSX`, `CSV` | Importazione diretta e immediata |
 | **Non-strutturati** | `PDF`, `DOCS`, `TXT`, Immagini | Layer di estrazione intelligente (**OCR avanzato o Vision**) per ricostruire la tabella dati (ASIN, Titolo, Prezzo) e normalizzarla in un formato leggibile dal motore di calcolo prima di procedere con l'analisi VGP |
 
-> [LACUNA L18 — CRITICA]: "OCR avanzato o Vision" — quale tecnologia concretamente? Tesseract (locale, open source, gratuito), GPT-4 Vision (API a pagamento), Claude Vision (API a pagamento), AWS Textract (a pagamento)? Decisione architettonica con impatto su costi operativi, latenza, dipendenze esterne.
+> **[L18 — CHIUSA Round 2 (2026-04-29)]** — Decisione Leader: **Tesseract locale**. Implicazioni: OCR open source, gratuito, dipendenza locale (no API esterne, no costi ricorrenti, no rate limit), qualità media — peggiore di GPT-4V/Claude V/Textract sui PDF deteriorati o scan a bassa risoluzione. Da gestire come rischio tecnico (vedi L24 e sezione 8.1).
 
 > [LACUNA L19 — FORMA]: "DOCS" come formato non strutturato. Significa Microsoft Word `.docx`? Google Docs export? Apple Pages?
 
@@ -235,9 +242,9 @@ Cash Inflow = BuyBox − Fee_FBA − (BuyBox * Referral_Fee)
 
 **Nota del Leader:** *zero scorporo IVA per via del Reverse Charge + Credito infinito*.
 
-> [LACUNA L11 — CRITICA]: `Fee_FBA` — come è ottenuta nella formula? Hardcoded? Lookup da Keepa API (campo `feeStorage`/`feeFBA`)? Da una tabella manuale per peso/dimensione? La FBA fee dipende dalla taxonomy Amazon (small/standard/oversize) e dalla stagione (Q4 surcharges).
+> **[L11 — CHIUSA Round 2 (2026-04-29) — Risposta condizionale]** — Decisione Leader: **lookup primario da Keepa API**; se il campo non è disponibile/affidabile → **fallback a una formula manuale che il Leader fornirà** (sub-lacuna L11b aperta). Strategia: priorità a `Keepa.feeFBA` (o equivalente del campo Keepa esatto da confermare con L21); se il valore non è esposto dal piano subscription scelto, attivare la formula manuale.
 
-> [LACUNA L12 — CRITICA]: `Referral_Fee` — come è ottenuta? Hardcoded a un valore (es. 8% per "Cell Phones & Accessories")? Configurabile per categoria? Lookup automatico dal nodo categoria Amazon? La % varia significativamente per categoria.
+> **[L12 — CHIUSA Round 2 (2026-04-29)]** — Decisione Leader: **sia lookup automatico per categoria sia override manuale configurabile dal cruscotto.** Strategia: lookup per nodo categoria Amazon come default (es. 8% per "Cell Phones & Accessories"); UI con campo override manuale per ASIN o per categoria, persistito in DB (R-03 ORDER-DRIVEN MEMORY non si applica perché è config, non transazione).
 
 #### Formula 2 — Cash Profit
 
@@ -317,7 +324,12 @@ Nessun deadline temporale dichiarato esplicitamente.
 
 > Nota del Leader (verbatim): *"Il software è pronto quando funziona senza nessun errore, in perfetto ordine e senza rischi di allucinazioni o compromessi sbrigativi di struttura."*
 
-> [LACUNA L20 — CRITICA per definizione di "done"]: il criterio è qualitativo. Per un MVP serve una traduzione misurabile. **Domanda:** definiamo un test di accettazione concreto? Esempi proposti (da validare): suite pytest con copertura target X%; fixture di listino noto (es. 1.000 righe Samsung) con risultato VGP+Tetris atteso byte-exact; nessun `.drop()` (R-01) verificabile via grep statico nel codice; lint zero warning. Va deciso prima del Frozen.
+> **[L20 — CHIUSA Round 2 (2026-04-29)]** — Decisione Leader: **suggerito accettato** ("l20 suggerito"). Set di criteri di completamento misurabili ratificato:
+> 1. **Suite pytest** che copre tutti i moduli del motore di calcolo (acquisizione, NLP/Estrattore, VGP, Tetris, Panchina, Storico Ordini); copertura target da definire nell'ADR di test (suggerimento: ≥ 85% sulle funzioni dei moduli core).
+> 2. **Fixture di listino noto** (es. 1.000 righe Samsung con costi/prezzi/Buy Box pre-fissati) con risultato VGP + carrello Tetris **atteso byte-exact**; il test fallisce se l'output devia di un singolo centesimo o ASIN.
+> 3. **R-01 NO SILENT DROPS verificato staticamente:** test che fa grep nel codice di `\.drop\(` e fallisce se ne trova occorrenze (eccetto in commenti o stringhe di log esplicite).
+> 4. **Lint zero warning** (linter da concordare in ADR di stack — candidato: `ruff` strict).
+> 5. **Type checking strict:** `mypy --strict` o `pyright strict` zero errori (decisione strumento in ADR di stack).
 
 ### 7.2 Orizzonte di successo / MVP
 
@@ -359,35 +371,45 @@ Nessun deadline temporale dichiarato esplicitamente.
 ## 9. Lacune Aperte
 
 > Sezione **live** alimentata in `Iterating`. Scende monotonicamente verso 0 (o lacune accettate consapevolmente) prima del `Frozen`.
+>
+> **Stato Round 2:** 6 lacune chiuse (L06, L08, L11, L12, L18, L20), 1 sub-lacuna nuova aperta (L11b). **19 aperte.**
 
-| # | Priorità | Lacuna | Sezione | Round | Status |
-|---|---|---|---|---|---|
-| **L04** | **CRITICA** | Formula del **VGP Score** non definita — è il monarca decisore del sistema | 4.1.4 / 6.3 | 1 | aperta |
-| **L08** | **CRITICA** | Lookup Amazon (fallback JungleScout): scraping vs PA-API? | 4.1.1 | 1 | aperta |
-| **L11** | **CRITICA** | `Fee_FBA`: hardcoded / Keepa / tabella manuale? | 6.3 (F1) | 1 | aperta |
-| **L12** | **CRITICA** | `Referral_Fee`: hardcoded / configurabile / lookup? | 6.3 (F1) | 1 | aperta |
-| **L18** | **CRITICA** | OCR/Vision: tecnologia concreta (Tesseract / GPT-4V / Claude V / Textract)? | 4.3 | 1 | aperta |
-| **L20** | **CRITICA** | Criteri di completamento misurabili (traduzione del "funziona senza errori") | 7.1 | 1 | aperta |
-| **L21** | **CRITICA** | Keepa: subscription, campi, costo, rate limit | 4.1.1 | 1 | aperta |
-| **L06** | **CRITICA** | Estrattore Samsung-only: scope MVP e roadmap multi-brand | 4.1.2 | 1 | aperta |
-| **L01** | IMPORTANTE | Stateless vs Storico Ordini/Panchina: confermare semantica | 1 | 1 | aperta |
-| **L02** | IMPORTANTE | Capitale di partenza `x`: valore concreto | 2 | 1 | aperta |
-| **L03** | IMPORTANTE | Cosa esce per il commercialista (formato/canale) | 3.2 | 1 | aperta |
-| **L05** | IMPORTANTE | Slider Velocity Target: range, default, granularità | 4.1.5 | 1 | aperta |
-| **L07** | IMPORTANTE | Filtro NLP vs Estrattore di entità: 1 modulo o 2? | 4.1.2-3 | 1 | aperta |
-| **L10** | IMPORTANTE | Soglia 8% Veto ROI: hardcoded o configurabile? | 6.2 R-08 | 1 | aperta |
-| **L13** | IMPORTANTE | Manual Override (R-04): UI/UX del lock-in | 6.2 R-04 | 1 | aperta |
-| **L14** | IMPORTANTE | Streamlit vs Gradio: scelta o decisione differita? | 6.4 | 1 | aperta |
-| **L15** | IMPORTANTE | PostgreSQL "Zero-Trust": RLS, ruoli, audit? | 6.1 | 1 | aperta |
-| **L16** | IMPORTANTE | ORM, test framework, type checker, linter | 6.1 | 1 | aperta |
-| **L17** | IMPORTANTE | Sezione 15 saltata: rischi non tecnici (ToS, GDPR, single-vendor) | 8.2 | 1 | aperta |
-| **L24** | IMPORTANTE | Rischi tecnici aggiuntivi (throttling, drift Keepa, OCR fail) | 8.1 | 1 | aperta |
-| **L09** | FORMA | R-08 vs R-09: refuso "Veto ROI (R-09)" — riferimento corretto è R-08? | 4.1.9 / 6.2 | 1 | aperta |
-| **L09b** | FORMA | R-09 cita "ciclo di saturazione Tetris (R-07)" — il Tetris è R-06 | 6.2 R-09 | 1 | aperta |
-| **L19** | FORMA | "DOCS" come formato: `.docx`? | 4.3 | 1 | aperta |
-| **L22** | FORMA | Storico ordini: solo interno o sync da Seller Central? | 4.1.10 | 1 | aperta |
+### Lacune Aperte
 
-**Totale lacune aperte:** 24 (8 critiche, 12 importanti, 4 di forma — L09b conta separatamente da L09)
+| # | Priorità | Lacuna | Sezione | Round aperto |
+|---|---|---|---|---|
+| **L04** | **CRITICA** | Formula del **VGP Score** non definita — è il monarca decisore del sistema | 4.1.4 / 6.3 | 1 |
+| **L21** | **CRITICA** | Keepa: subscription, campi, costo, rate limit | 4.1.1 | 1 |
+| **L11b** | IMPORTANTE / CONDIZIONALE | Formula manuale Fee_FBA fornita dal Leader (attivata se Keepa non espone il campo nel piano scelto — derivante da L11) | 6.3 (F1) | 2 |
+| **L01** | IMPORTANTE | Stateless vs Storico Ordini/Panchina: confermare semantica | 1 | 1 |
+| **L02** | IMPORTANTE | Capitale di partenza `x`: valore concreto | 2 | 1 |
+| **L03** | IMPORTANTE | Cosa esce per il commercialista (formato/canale) | 3.2 | 1 |
+| **L05** | IMPORTANTE | Slider Velocity Target: range, default, granularità | 4.1.5 | 1 |
+| **L07** | IMPORTANTE | Filtro NLP vs Estrattore di entità: 1 modulo o 2? | 4.1.2-3 | 1 |
+| **L10** | IMPORTANTE | Soglia 8% Veto ROI: hardcoded o configurabile? | 6.2 R-08 | 1 |
+| **L13** | IMPORTANTE | Manual Override (R-04): UI/UX del lock-in | 6.2 R-04 | 1 |
+| **L14** | IMPORTANTE | Streamlit vs Gradio: scelta o decisione differita? | 6.4 | 1 |
+| **L15** | IMPORTANTE | PostgreSQL "Zero-Trust": RLS, ruoli, audit? | 6.1 | 1 |
+| **L16** | IMPORTANTE | ORM, test framework, type checker, linter (parzialmente compensata da L20: pytest + ruff + mypy/pyright) | 6.1 | 1 |
+| **L17** | IMPORTANTE | Sezione 15 saltata: rischi non tecnici (ToS, GDPR, single-vendor) — aggravata da L08 (scraping ↔ ToS Amazon) | 8.2 | 1 |
+| **L24** | IMPORTANTE | Rischi tecnici aggiuntivi (throttling, drift Keepa, OCR fail) — aggravata da L18 (Tesseract qualità media su PDF deteriorati) | 8.1 | 1 |
+| **L09** | FORMA | R-08 vs R-09: refuso "Veto ROI (R-09)" — riferimento corretto è R-08? | 4.1.9 / 6.2 | 1 |
+| **L09b** | FORMA | R-09 cita "ciclo di saturazione Tetris (R-07)" — il Tetris è R-06 | 6.2 R-09 | 1 |
+| **L19** | FORMA | "DOCS" come formato: `.docx`? | 4.3 | 1 |
+| **L22** | FORMA | Storico ordini: solo interno o sync da Seller Central? | 4.1.10 | 1 |
+
+**Totale lacune aperte:** 19 (2 critiche, 13 importanti, 4 di forma)
+
+### Lacune Chiuse
+
+| # | Round chiuso | Decisione finale (sintesi) |
+|---|---|---|
+| **L06** | 2 | MVP Samsung-only + interface `BrandExtractor` modulare (delega Leader → Claude) |
+| **L08** | 2 | Scraping `amazon.it` (libreria specifica in ADR di stack) |
+| **L11** | 2 | Lookup primario Keepa + fallback a formula manuale (→ L11b nuova) |
+| **L12** | 2 | Lookup automatico per categoria + override manuale configurabile dal cruscotto |
+| **L18** | 2 | Tesseract locale (open source, gratis, qualità media) |
+| **L20** | 2 | Pytest + fixture byte-exact + grep statico R-01 + lint + type-check strict |
 
 ---
 
@@ -405,6 +427,31 @@ Nessun deadline temporale dichiarato esplicitamente.
 | 1.3 | Lacune chiuse | 0. Tutte aperte, da chiudere nei round successivi. |
 
 **Esito Round 1:** trascrizione integrale fatta, 24 lacune da risolvere. Il prossimo round è la prima tornata di Q&A (Round 2): il Leader risponde alle critiche prioritariamente.
+
+---
+
+### Round 2 — 2026-04-29 — Risposte alle lacune critiche (parziale)
+
+> Risposte verbatim del Leader: *"l18 tesseract locale. l20 suggerito. l08 scraping. l06 quello che ti sembra meglio. l11 se possibile prendi da keepa, altrimenti utilizzi formula che ti darò dopo. l12 sia lookup che configurabile"*
+
+| # | Lacuna | Domanda di Claude | Risposta del Leader (verbatim) | Decisione finale | Lacuna chiusa? |
+|---|---|---|---|---|---|
+| 2.1 | **L18** | OCR/Vision per file non strutturati: Tesseract / GPT-4V / Claude V / Textract? | *"l18 tesseract locale"* | Tesseract locale (open source, gratis, qualità media). Implicazioni: no API esterne, no costi ricorrenti, qualità degradata su PDF deteriorati (rischio L24) | ✅ chiusa |
+| 2.2 | **L20** | Criteri di completamento misurabili — accetti il set proposto (pytest + fixture + grep R-01 + lint + type-check)? | *"l20 suggerito"* | Suggerito accettato integralmente: pytest con copertura target ≥ 85% (da confermare in ADR test), fixture byte-exact, grep `\.drop\(`, ruff strict, mypy/pyright strict | ✅ chiusa |
+| 2.3 | **L08** | Lookup Amazon (fallback JungleScout): scraping `amazon.it` o PA-API 5? | *"l08 scraping"* | Scraping `amazon.it`. La libreria (Selenium / Playwright / requests+bs4) sarà oggetto di ADR di stack. Implicazioni ToS Amazon → aggrava L17 | ✅ chiusa |
+| 2.4 | **L06** | Estrattore Samsung-only: scope MVP e roadmap multi-brand? | *"l06 quello che ti sembra meglio"* (delega esplicita) | Decisione di Claude (ratificata dalla delega): MVP Samsung-only + architettura modulare con interface `BrandExtractor` + implementazione `SamsungExtractor` come unica in MVP. Multi-brand post-MVP via nuove implementazioni | ✅ chiusa (per delega) |
+| 2.5 | **L11** | `Fee_FBA`: hardcoded / Keepa / tabella manuale? | *"l11 se possibile prendi da keepa, altrimenti utilizzi formula che ti darò dopo"* | Lookup primario Keepa (campo da confermare con L21); se assente nel piano subscription scelto → fallback a formula manuale fornita dal Leader (apre **L11b**) | ✅ chiusa con sub-lacuna L11b |
+| 2.6 | **L12** | `Referral_Fee`: hardcoded / configurabile / lookup? | *"l12 sia lookup che configurabile"* | Lookup automatico per categoria come default + override manuale per ASIN o categoria, persistito in DB (config layer, non transazione) | ✅ chiusa |
+| 2.7 | **L04** | Formula del VGP Score? | (non risposta) | aperta — bottleneck dell'MVP | ❌ aperta |
+| 2.8 | **L21** | Keepa: subscription/campi/costo/rate limit? | (non risposta) | aperta — collegata a L11 | ❌ aperta |
+
+**Esito Round 2:**
+- 6 lacune chiuse (L06, L08, L11, L12, L18, L20).
+- 1 sub-lacuna nuova aperta (**L11b** — formula manuale Fee_FBA che il Leader fornirà).
+- 2 critiche restano aperte (L04, L21).
+- **Bottleneck per Frozen:** L04 (formula VGP).
+
+**Prossimo round (Round 3) atteso:** chiusura di L04 e L21, poi sweep delle 13 importanti rimanenti + 4 di forma.
 
 ---
 
@@ -426,3 +473,4 @@ Nessun deadline temporale dichiarato esplicitamente.
 |---|---|---|
 | 2026-04-29 | Draft | File creato (CHG-2026-04-29-003, ratifica ADR-0012) — pronto per esposizione |
 | 2026-04-29 | **Iterating** | Esposizione iniziale del Leader; trascrizione verbatim; 24 lacune raccolte (CHG-2026-04-29-004) |
+| 2026-04-29 | **Iterating** | Round 2 Q&A: chiuse 6 lacune critiche (L06, L08, L11, L12, L18, L20), aperta L11b condizionale; 19 aperte (CHG-2026-04-29-005) |

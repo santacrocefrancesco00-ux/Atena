@@ -3,14 +3,14 @@
 > **Leggere per primo nel self-briefing (Step 1, dopo Step 0 di verifica hook) — max 60 secondi per il re-entry.**
 > Aggiornare alla fine di ogni sessione con modifiche, nello stesso commit (ADR-0008 Regola 7 + ADR-0010).
 
-> **Ultimo aggiornamento:** 2026-04-29 — commit `44d53e7`
-> **Sessione corrente:** TALOS — Iterating Round 1: trascrizione verbatim della bozza del Leader in PROJECT-RAW.md, raccolta di 24 lacune (8 critiche, 12 importanti, 4 di forma).
+> **Ultimo aggiornamento:** 2026-04-29 — commit `[da aggiornare post-commit CHG-005]`
+> **Sessione corrente:** TALOS — Iterating **Round 2**: chiuse 6 lacune critiche (L06, L08, L11, L12, L18, L20), 1 nuova condizionale (L11b). **19 aperte** (2 critiche residue: L04 formula VGP, L21 Keepa).
 
 ---
 
 ## Stato in Una Riga
 
-Governance hardened (ADR 0001–0012) + vision in `Iterating` Round 1 su **TALOS (Scaler 500k)** — Hedge Fund algoritmico per FBA Wholesale High-Ticket. 24 lacune da chiudere prima del Frozen. Critica bloccante: formula VGP Score non definita (L04).
+Governance hardened (ADR 0001–0012) + vision in `Iterating` **Round 2** su **TALOS (Scaler 500k)** — Hedge Fund algoritmico per FBA Wholesale High-Ticket. 19 lacune da chiudere prima del Frozen (era 24 in Round 1; 6 chiuse, 1 nuova condizionale L11b). **Critica bloccante:** formula VGP Score non definita (L04).
 
 **Repository:** https://github.com/santacrocefrancesco00-ux/Atena
 **Milestone tag corrente:** `milestone/vision-protocol-v0.6.0` su commit `55ea55f` (restore point pre-esposizione)
@@ -27,6 +27,7 @@ Governance hardened (ADR 0001–0012) + vision in `Iterating` Round 1 su **TALOS
 | Vision capture protocol — ADR-0012 + PROJECT-RAW.md template Draft | 0012 | [CHG-003](changes/2026-04-29-003-vision-capture-adr.md) | `7b7ef17` |
 | Restore point `milestone/vision-protocol-v0.6.0` | 0003 | — | tag su `55ea55f` |
 | **TALOS — Esposizione Round 1: trascrizione verbatim + 24 lacune** | 0012 | [CHG-004](changes/2026-04-29-004-talos-exposition-iterating.md) | `44d53e7` |
+| **TALOS — Round 2 Q&A: 6 critiche chiuse, L11b condizionale aperta** | 0012 | [CHG-005](changes/2026-04-29-005-talos-iterating-round-2.md) | [commit corrente] |
 
 ---
 
@@ -34,22 +35,28 @@ Governance hardened (ADR 0001–0012) + vision in `Iterating` Round 1 su **TALOS
 
 | ID | Cosa | Priorità | Note |
 |---|---|---|---|
-| **ESP-002** | **Round 2 Q&A: chiusura delle 24 lacune (priorità: 8 critiche)** | **Prossimo passo immediato** | Leader risponde, Claude affina PROJECT-RAW.md; in particolare L04 (formula VGP) è bloccante per definire l'MVP |
+| ~~ESP-002~~ | ~~Round 2 Q&A~~ | **Chiusa parzialmente in Round 2 (CHG-005)** | 6 critiche su 8 chiuse; restano L04 + L21 |
+| **ESP-003** | **Round 3 Q&A: chiusura L04 (formula VGP) + L21 (Keepa) + sweep importanti+forma** | **Prossimo passo immediato** | L04 è bottleneck dell'MVP; Round 3 sblocca specificabilità + testabilità |
 | ISS-001 | `gitnexus analyze` non eseguibile (architettura processore) | Rinviata | Uso futuro da PC operativo Leader |
 | ISS-002 | Stack tecnologico → ADR di stack | Bloccante per fase codice | Si sblocca dopo Frozen + scomposizione validata; vincoli già parzialmente dichiarati: Python 3.10+, PostgreSQL via Docker, Streamlit/Gradio (LACUNA L14), Numpy vettorizzato |
 
-### Le 8 lacune critiche (PROJECT-RAW.md sezione 9)
+### Le 2 lacune critiche residue (post Round 2)
 
-| # | Lacuna | Sezione |
+| # | Lacuna | Sezione | Note |
+|---|---|---|---|
+| L04 | **Formula del VGP Score non definita** (monarca decisore) | 4.1.4 / 6.3 | Bottleneck assoluto: senza questa l'MVP non è specificabile né testabile |
+| L21 | Keepa: subscription, campi, costo, rate limit | 4.1.1 | Collegata a L11/L11b: definisce se il lookup Fee_FBA è disponibile o se serve la formula manuale del Leader |
+
+### Decisioni architetturali ratificate in Round 2
+
+| # | Decisione | Origine |
 |---|---|---|
-| L04 | **Formula del VGP Score non definita** (monarca decisore) | 4.1.4 / 6.3 |
-| L06 | Estrattore Samsung-only: scope MVP e roadmap multi-brand | 4.1.2 |
-| L08 | Lookup Amazon (fallback JungleScout): scraping vs PA-API | 4.1.1 |
-| L11 | `Fee_FBA`: hardcoded / Keepa / tabella manuale | 6.3 |
-| L12 | `Referral_Fee`: hardcoded / configurabile / lookup | 6.3 |
-| L18 | OCR/Vision: tecnologia concreta (Tesseract/GPT-4V/Claude V/Textract) | 4.3 |
-| L20 | Criteri di completamento misurabili | 7.1 |
-| L21 | Keepa: subscription, campi, costo, rate limit | 4.1.1 |
+| L06 | MVP Samsung-only + interface `BrandExtractor` modulare per estensione futura | Delega esplicita Leader → Claude |
+| L08 | Scraping `amazon.it` (libreria specifica in ADR di stack) | Leader |
+| L11 | Lookup primario Keepa + fallback formula manuale (→ L11b condizionale) | Leader |
+| L12 | Lookup automatico per categoria + override manuale configurabile | Leader |
+| L18 | Tesseract locale (open source, gratis, qualità media) | Leader |
+| L20 | Pytest + fixture byte-exact + grep statico R-01 + ruff strict + mypy/pyright strict | Suggerimento Claude accettato |
 
 ---
 
@@ -88,4 +95,5 @@ Governance hardened (ADR 0001–0012) + vision in `Iterating` Round 1 su **TALOS
 | ISS-001 | `gitnexus analyze` segfault / exit code 5 su Node v24.15.0; architettura processore macchina locale incompatibile | Saltare step 4 GitNexus nel self-briefing con dichiarazione esplicita; uso futuro da PC operativo Leader | ADR-0007 | Rinviata |
 | ISS-002 | Stack tecnologico → ADR di stack non promulgato | Si sblocca dopo Frozen di TALOS + scomposizione validata | ADR-0012 → ADR di stack | Bloccante per fase codice |
 | ESP-001 | Esposizione bozza progetto | **Chiusa 2026-04-29 con CHG-004** — bozza esposta verbatim, status Iterating | ADR-0012 | Chiusa |
-| ESP-002 | Round 2: chiusura delle 24 lacune di TALOS | Prossimo passo del Leader (priorità: 8 critiche, in particolare L04 formula VGP) | ADR-0012 | Prossima |
+| ESP-002 | Round 2: chiusura delle 24 lacune di TALOS | **Chiusa parzialmente 2026-04-29 con CHG-005** — 6 critiche chiuse (L06, L08, L11, L12, L18, L20); 1 condizionale nuova (L11b) | ADR-0012 | Chiusa parzialmente |
+| ESP-003 | Round 3: chiusura L04 (formula VGP) + L21 (Keepa) + sweep delle 13 importanti + 4 di forma | Prossimo passo del Leader; L04 è bottleneck dell'MVP | ADR-0012 | Prossima |

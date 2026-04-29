@@ -9,6 +9,20 @@ e questo progetto aderisce al [Semantic Versioning](https://semver.org/lang/it/)
 
 ## [Unreleased]
 
+## [0.7.1] — 2026-04-29 — TALOS Iterating Round 2
+
+### Changed
+- `PROJECT-RAW.md`: 6 lacune chiuse in Round 2 (L06 Samsung-only modulare, L08 scraping Amazon, L11 lookup Keepa primario, L12 Referral_Fee lookup+override, L18 Tesseract locale, L20 criteri di completamento misurabili accettati); 1 sub-lacuna nuova aperta (L11b formula manuale Fee_FBA); frontmatter `qa_rounds: 2`; sezione 9 ristrutturata in Aperte/Chiuse; Q&A Log esteso con Round 2 verbatim ([CHG-2026-04-29-005](docs/changes/2026-04-29-005-talos-iterating-round-2.md))
+- `docs/STATUS.md`: Round 2 registrato, 19 lacune aperte (2 critiche L04/L21), prossima azione = Round 3
+- `ROADMAP.md`: log validazioni esteso con Round 2
+
+### Added
+- `docs/changes/2026-04-29-005-talos-iterating-round-2.md` — change document Round 2
+
+### Lacune critiche residue
+- **L04** Formula del VGP Score (bottleneck dell'MVP)
+- **L21** Keepa: subscription, campi, costo, rate limit (collegata a L11/L11b)
+
 ## [0.7.0] — 2026-04-29 — TALOS Vision Exposition (Round 1)
 
 ### Added
